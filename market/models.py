@@ -1,5 +1,5 @@
 from decimal import Decimal
-
+from random import randint
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.contrib.auth import get_user_model
@@ -59,9 +59,9 @@ class Company(models.Model):
 
     def calculate_change(self, old_price):
         """ Calculate CMP change """
-        print('old', old_price)
+        #print('old', old_price)
         self.change = ((self.cmp - old_price) / old_price) * Decimal(100.00)
-        print(self.change)
+        #print(self.change)
         self.save()
 
     def update_cmp(self):
@@ -70,8 +70,9 @@ class Company(models.Model):
         # self.cmp += (
         #     self.cmp * Decimal(self.temp_stocks_bought) - self.cmp * Decimal(self.temp_stocks_sold)
         # ) / Decimal(self.stocks_offered)
-
-        self.cmp += Decimal((self.temp_stocks_bought - self.temp_stocks_sold) / self.stocks_offered)
+        if (self.temp_stocks_bought + self.temp_stocks_sold) > 0:
+            self.cmp += Decimal(((self.temp_stocks_bought - self.temp_stocks_sold)*randint(1,10))
+                                / ((self.temp_stocks_bought + self.temp_stocks_sold)*randint(1,10)))
 
         self.calculate_change(old_price)
         self.temp_stocks_bought = 0
@@ -80,8 +81,8 @@ class Company(models.Model):
 
     def user_buy_stocks(self, quantity, price):
         if quantity <= self.stocks_remaining:
-            value_at_instant = (((Decimal(self.stocks_offered) - Decimal(self.stocks_remaining)) / (Decimal(self.stocks_offered) * 8)) * Decimal(self.cmp))
-            value_at_instant += Decimal(self.cmp)
+            #value_at_instant = (((Decimal(self.stocks_offered) - Decimal(self.stocks_remaining)) / (Decimal(self.stocks_offered) * 8)) * Decimal(self.cmp))
+            value_at_instant = Decimal(self.cmp)
             if value_at_instant <= price:
                 # Change only returns true or false
                 self.stocks_remaining -= quantity
@@ -94,7 +95,7 @@ class Company(models.Model):
     def user_sell_stocks(self, quantity, price):
         if quantity <= self.stocks_offered:
             value_at_instant = Decimal(self.cmp)
-            value_at_instant -= (((Decimal(self.stocks_offered) - Decimal(self.stocks_remaining)) / (Decimal(self.stocks_offered) * 8)) * Decimal(self.cmp))
+            #value_at_instant -= (((Decimal(self.stocks_offered) - Decimal(self.stocks_remaining)) / (Decimal(self.stocks_offered) * 8)) * Decimal(self.cmp))
             if value_at_instant >= price:
                 self.stocks_remaining += quantity
                 self.temp_stocks_sold += (quantity * price)

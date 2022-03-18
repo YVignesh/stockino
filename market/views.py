@@ -65,11 +65,11 @@ class CompanyAdminCompanyUpdateView(AdminRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         company = Company.objects.get(code=kwargs.get('code'))
         price = request.POST.get('price')
-        old_price = company.cmp
+        old_price = list(CompanyCMPRecord.objects.filter(company = company))[-1].cmp
         company.cmp = Decimal(int(price))
         company.save()
         company.calculate_change(old_price)
-        print('price', int(price))
+        #print('price', int(price))
         url = reverse('market:admin', kwargs={'code': company.code})
         return HttpResponseRedirect(url)
 
@@ -136,7 +136,9 @@ class CompanyTransactionView(LoginRequiredMixin, CountNewsMixin, View):
             user = request.user
             mode = request.POST.get('mode')
             quantity = int(request.POST.get('quantity'))
-            price = Decimal(request.POST.get('quote_amount'))
+            #price = Decimal(request.POST.get('quote_amount'))
+            price = Decimal(company.cmp)
+            #print(price)
             investment_obj, obj_created = InvestmentRecord.objects.get_or_create(user=user, company=company)
             if quantity > 0:
                 if mode == 'buy':

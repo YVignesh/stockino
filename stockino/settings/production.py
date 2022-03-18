@@ -1,6 +1,7 @@
 import os
 from decimal import Decimal
 from datetime import datetime
+from Config import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -10,24 +11,24 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # Discord News
-DISCORD_NEWS_BOT_URL = os.environ.get('DISCORD_NEWS_URL')
-DISCORD_NEWS_BOT_AVATAR = os.environ.get('DISCORD_NEWS_BOT_AVATAR', "https://media1.tenor.com/images/ccf584b7ebafc83beb1b929ae93421ec/tenor.gif?itemid=5753267")
+#DISCORD_NEWS_BOT_URL = os.environ.get('DISCORD_NEWS_URL')
+#DISCORD_NEWS_BOT_AVATAR = os.environ.get('DISCORD_NEWS_BOT_AVATAR', "https://media1.tenor.com/images/ccf584b7ebafc83beb1b929ae93421ec/tenor.gif?itemid=5753267")
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'This is a secret')
+SECRET_KEY = Config['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
+DEBUG = Config['SECRET_KEY']
 
-ALLOWED_HOSTS = ['128.199.22.78']
+ALLOWED_HOSTS = ['142.93.220.95']
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+EMAIL_HOST_USER = Config['EMAIL_USER']
+EMAIL_HOST_PASSWORD = Config['EMAIL_PASS']
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-BASE_URL = 'stockino.herokuapp.com'
+BASE_URL = '142.93.220.95'
 
 DEFAULT_ACTIVATION_DAYS = 2
 
@@ -39,14 +40,14 @@ ADMINS = MANAGERS
 
 # Bank Data
 DEFAULT_CASH = Decimal(100000.00)
-DEFAULT_LOAN_AMOUNssh T = Decimal(25000.00)
+DEFAULT_LOAN_AMOUNT = Decimal(25000.00)
 MAX_LOAN_ISSUE = 2
 RATE_OF_INTEREST = Decimal(0.10)  # 15%
 TAX_RATE = Decimal(0.15)  # 40%
 
 # Global settings
-START_TIME = datetime.strptime(os.getenv("START_TIME", "2021/02/01:00:00:00"), "%Y/%m/%d:%H:%M:%S")
-STOP_TIME = datetime.strptime(os.getenv("STOP_TIME", "2022/02/01:00:00:00"), "%Y/%m/%d:%H:%M:%S")
+START_TIME = datetime.strptime(Config["START_TIME"], "%Y/%m/%d:%H:%M:%S")
+STOP_TIME = datetime.strptime(Config["STOP_TIME"], "%Y/%m/%d:%H:%M:%S")
 
 
 # Application definition
@@ -117,7 +118,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

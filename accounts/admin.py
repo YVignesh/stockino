@@ -56,4 +56,20 @@ class EmailActivationAdmin(admin.ModelAdmin):
 
 admin.site.register(EmailActivation, EmailActivationAdmin)
 
-admin.site.register(News)
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ('title', 'content', 'is_active')
+    search_fields = ['title']   # Search guest users by email in admin panel
+
+    actions = ['make_active', 'make_inactive']
+
+    @admin.action(description='Mark selected news as active')
+    def make_active(self, request, queryset):
+        queryset.update(is_active = True)
+
+    @admin.action(description='Mark selected news as inactive')
+    def make_inactive(self, request, queryset):
+        queryset.update(is_active=False)
+
+    class Meta:
+        model = News
+admin.site.register(News, NewsAdmin)

@@ -85,6 +85,9 @@ $(document).ready(function(){
     <div class="col mx-auto my-3">
         <div class="text-center">
             <h1 class="heading">{{ object.name }}</h1>
+            {% if request.user.is_superuser %}
+            <a href="{% url 'market:admin' object.code %}">Change Market Price</a>
+            {% endif %}
             <p>
                 <strong>Industry:</strong> {{ object.industry }}<br>
                 <strong>Cap Type:</strong> {{ object.get_cap }}<br>
