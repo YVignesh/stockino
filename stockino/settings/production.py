@@ -21,14 +21,14 @@ SECRET_KEY = Config['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = Config['SECRET_KEY']
 
-ALLOWED_HOSTS = ['142.93.220.95']
+ALLOWED_HOSTS = ['stockino.me', 'www.stockino.me', '139.59.33.123']
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = Config['EMAIL_USER']
 EMAIL_HOST_PASSWORD = Config['EMAIL_PASS']
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-BASE_URL = '142.93.220.95'
+BASE_URL = 'stockino.me'
 
 DEFAULT_ACTIVATION_DAYS = 2
 
@@ -41,8 +41,8 @@ ADMINS = MANAGERS
 # Bank Data
 DEFAULT_CASH = Decimal(100000.00)
 DEFAULT_LOAN_AMOUNT = Decimal(25000.00)
-MAX_LOAN_ISSUE = 2
-RATE_OF_INTEREST = Decimal(0.10)  # 15%
+MAX_LOAN_ISSUE = 3
+RATE_OF_INTEREST = Decimal(0.01)  # 15%
 TAX_RATE = Decimal(0.15)  # 40%
 
 # Global settings

@@ -66,9 +66,10 @@ class CompanyAdminCompanyUpdateView(AdminRequiredMixin, View):
         company = Company.objects.get(code=kwargs.get('code'))
         price = request.POST.get('price')
         old_price = list(CompanyCMPRecord.objects.filter(company = company))[-1].cmp
+        #old_price = company.cmp
         company.cmp = Decimal(int(price))
         company.save()
-        company.calculate_change(old_price)
+        company.calculate_change(old_price )
         #print('price', int(price))
         url = reverse('market:admin', kwargs={'code': company.code})
         return HttpResponseRedirect(url)

@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
 
     def create_user(self, username, email, password=None, full_name=None, is_active=True, is_staff=False, is_superuser=False):
         if not username:
-            raise ValueError('Users must have a unique username.')
+            raise ValueError('Users must have a unique Roll No.')
         if not email:
             raise ValueError('Users must have an email.')
         if not password:
@@ -75,7 +75,7 @@ class User(AbstractBaseUser):
     username = models.CharField(unique=True, max_length=120)
     email = models.EmailField(unique=True, max_length=255)
     full_name = models.CharField(max_length=255, blank=True, null=True)
-    teammates = models.CharField(max_length=100, blank=True, null=True)
+    #teammates = models.CharField(max_length=100, blank=True, null=True)
     cash = models.DecimalField(max_digits=20, decimal_places=2, default=DEFAULT_CASH)
     loan = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     loan_count = models.IntegerField(default=0)  # For arithmetic interest calculation
@@ -159,9 +159,10 @@ class User(AbstractBaseUser):
         self.save()
 
     def deduct_interest(self):
-        amount = (self.loan * (Decimal(1.0) + RATE_OF_INTEREST))  # After 1 year
-        compound_interest = abs(amount - self.loan)
-        self.cash -= compound_interest
+        amount = (self.loan * RATE_OF_INTEREST)  # After 1 year
+        #compound_interest = abs(amount - self.loan)
+        #self.cash -= compound_interest
+        self.cash -= amount
         self.save()
 
     def update_cv(self, net_worth_list):
@@ -283,7 +284,7 @@ class News(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-timestamp', '-updated']
+        ordering = ['-updated', '-timestamp']
 
     def __str__(self):
         return self.title

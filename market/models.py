@@ -71,8 +71,7 @@ class Company(models.Model):
         #     self.cmp * Decimal(self.temp_stocks_bought) - self.cmp * Decimal(self.temp_stocks_sold)
         # ) / Decimal(self.stocks_offered)
         if (self.temp_stocks_bought + self.temp_stocks_sold) > 0:
-            self.cmp += Decimal(((self.temp_stocks_bought - self.temp_stocks_sold)*randint(1,10))
-                                / ((self.temp_stocks_bought + self.temp_stocks_sold)*randint(1,10)))
+            self.cmp += Decimal(((self.temp_stocks_bought - self.temp_stocks_sold)/self.stocks_offered)*10*randint(1,5))
 
         self.calculate_change(old_price)
         self.temp_stocks_bought = 0
